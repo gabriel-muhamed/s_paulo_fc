@@ -1,13 +1,12 @@
 import React from "react";
 import { AppBar, Toolbar, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SPLogo } from "../Utils/tools";
-import { showToastError, showToastSuccess, logoutHandler } from "../Utils/tools"
+import { logoutHandler } from "../Utils/tools"
 
 const Header = ({ user }) => {
- 
-  const navigate = useNavigate();
+
+  const navigate = useNavigate()
 
   return (
     <AppBar
@@ -27,7 +26,7 @@ const Header = ({ user }) => {
         </div>
 
         <Link to="/the_team">
-          <Button color="inherit">Sobre</Button>
+          <Button color="inherit">Elenco</Button>
         </Link>
         <Link to="/matches">
           <Button color="inherit">Partidas</Button>
@@ -39,7 +38,7 @@ const Header = ({ user }) => {
               <Button color="inherit">Painel</Button>
             </Link>
 
-            <Button color="inherit" onClick={() => logoutHandler()}>
+            <Button color="inherit" onClick={() => logoutHandler(navigate)}>
               Sair
             </Button>
           </>

@@ -34,7 +34,7 @@ const SignIn = ({ user }) => {
   const submitForm = (values) => {
     signInWithEmailAndPassword(auth, values.email, values.password)
       .then(() => {
-        navigate("/dashboard");
+        navigate("/admin_dashboard");
         showToastSuccess("Seja Bem-vindo!");
       })
       .catch((error) => {
@@ -45,7 +45,7 @@ const SignIn = ({ user }) => {
 
   useEffect(() => {
     if (user) {
-      navigate("/dashboard");
+      navigate("/admin_dashboard");
     }
   }, [user, navigate]);
 

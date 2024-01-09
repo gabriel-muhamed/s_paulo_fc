@@ -1,12 +1,11 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ListItem } from "@mui/material";
-import { auth } from "../../../firebase";
-import { showToastError, showToastSuccess, logoutHandler} from "../../Utils/tools";
-import { withRouter } from "../Dashboard";
+import { logoutHandler} from "../../Utils/tools";
 
 const AdminNav = (props) => {
-    const navigate = useNavigate();
+
+    const navigate = useNavigate()
 
     const links = [
         {
@@ -32,7 +31,7 @@ const AdminNav = (props) => {
     return (
         <div>
             {renderItems()}
-            <ListItem button className="admin_nav_link" onClick={() => logoutHandler()}>
+            <ListItem button className="admin_nav_link" onClick={() => logoutHandler(navigate)}>
                     Sair
             </ListItem>
         </div>

@@ -8,21 +8,23 @@ import * as Yup from "yup"
 
 import { selectErrorHelper, selectIsError, showToastError, showToastSuccess, textErrorHelper } from '../../Utils/tools'
 import { TextField, Select, MenuItem, FormControl, Button } from '@mui/material'
-import { add, createDoc, get, getOne, playersCollection } from '../../../firebase'
+import { add, createDoc, getOne, getRef, playersCollection, storage } from '../../../firebase'
 import { setDoc } from 'firebase/firestore'
+import { getDownloadURL } from 'firebase/storage'
 
 const defaultValues = {
     name: '',
     lastname: '',
     number: '',
     position: '',
-    image:''
+    image: ''
 }
 
 const AddEditPlayers = (props) => {
     const [formType, setFormType] = useState('');
     const [values, setValues] = useState(defaultValues)
     const [loading, setLoading] = useState(false);
+    const [defaultImg, setDefaultImg] = useState('')
     const { playerid } = useParams();
     const navigate = useNavigate()
 
@@ -66,7 +68,7 @@ const AddEditPlayers = (props) => {
             position: Yup.string()
                 .required('Essa seção é necessária'),
             image: Yup.string()
-            .required('Essa seção é necessária'),
+                .required('Essa seção é necessária'),
         }),
         onSubmit: (values) => {
             submitForm(values);
@@ -77,6 +79,12 @@ const AddEditPlayers = (props) => {
         if (playerid) {
             getOne(createDoc(playersCollection, playerid))
                 .then((querySnapshot) => {
+                    const imageRef = getRef(storage, `players/${querySnapshot.data().image}`);
+                    getDownloadURL(imageRef)
+                        .then(url => {
+                            updateImageName(querySnapshot.data().image)
+                            setDefaultImg(url)
+                        })
                     setFormType('edit')
                     setValues(querySnapshot.data())
                 })
@@ -93,6 +101,11 @@ const AddEditPlayers = (props) => {
         formik.setFieldValue('image', filename)
     }
 
+    const resetImg = () => {
+        formik.setFieldValue('image', '')
+        setDefaultImg('')
+    }
+
     return (
         <AdminLayout title={formType === 'add' ? 'Adicionar jogador' : 'Editar jogador'}>
             <div className='editplayers_dialog_wrapper'>
@@ -101,7 +114,10 @@ const AddEditPlayers = (props) => {
                         <FormControl error={selectIsError(formik, 'image')}>
                             <FileUpload
                                 dir='players'
+                                defaultImg={defaultImg}
+                                defaultImgName={formik.values.image}
                                 filename={(filename) => updateImageName(filename)}
+                                resetImg={() => resetImg()}
                             />
                         </FormControl>
                         <hr />

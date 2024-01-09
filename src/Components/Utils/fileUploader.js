@@ -10,6 +10,13 @@ const FileUpload = (props) => {
     const [fileUrl, setFileUrl] = useState('');
     const [fileName, setFileName] = useState('');
 
+    useEffect(() => {
+        if (props.defaultImg) {
+            setFileName(props.defaultImgName);
+            setFileUrl(props.defaultImg);
+        }
+    }, [props.defaultImg, props.defaultImgName]);
+
     const uploadImage = (file) => {
         console.log("Imagem inserida");
         setIsUploading(true);
@@ -35,7 +42,13 @@ const FileUpload = (props) => {
         }, 500);
     }
 
+    const removeImg = () => {
+        setFileName('')
+        setFileUrl('')
+        props.resetImg()
+    }
 
+    console.log(props)
     return (
         <div>
             {!fileUrl ?
@@ -56,9 +69,10 @@ const FileUpload = (props) => {
                             width: '100%'
                         }}
                         src={fileUrl}
+                        alt={fileName}
                     >
                     </img>
-                    <div className="remove" onClick={() => alert('remove')}>
+                    <div className="remove" onClick={() => removeImg()}>
                         Remover
                     </div>
                 </div>

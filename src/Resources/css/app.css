@@ -138,18 +138,19 @@ button:hover {
     color: #ffffff;
     border: 1px solid white;
     padding: 10px;
+    cursor: pointer;
 }
 
 .not_found_container {
     text-align: center;
-    margin-top: 96px;
+    margin-top: 200px;
     padding: 20px;
     background-size: 5px 5px !important;
     min-height: 100vh;
     text-align: center;
     font-size: 90px;
     font-family: 'Righteous', cursive;
-    color: #d5ebfe;
+    color: #fed5d5;
 }
 
 
@@ -314,7 +315,7 @@ footer .footer_discl {
 
 .match_box_big {
     width:100%;
-    border-bottom: 2px solid #98c6e9;
+    border-bottom: 2px solid #e99898;
     padding: 20px;
     box-sizing: border-box;
     height: 143px;
@@ -350,7 +351,7 @@ footer .footer_discl {
 }
 
 .block_wraper.nfo {
-    border-left: 1px solid #98c6e9;
+    border-left: 1px solid #e99898;
     height: 102px;
     padding-left: 10px;
     font-weight: 300;
@@ -363,8 +364,8 @@ footer .footer_discl {
 
 .match_filters {
      display: flex;
-     border-bottom: 1px solid #01285e;
-     background: #dff1ff;
+     border-bottom: 1px solid #5e0101;
+     background: #ffdfdf;
 }
 .match_filters .tag {
     font-weight: 300;
@@ -381,14 +382,14 @@ footer .footer_discl {
 }
 
 .match_filters .option.active {
-    background: #62a2d3;
+    background: #d36262;
     color: #fff;
 }
 
 .match_filters_box {
     padding: 10px 20px;
-    border-right: 1px solid #01285e;
-    background: #dff1ff;
+    border-right: 1px solid #5e0101;
+    background: #ffdfdf;
 }
 
 .match_filters .cont {
@@ -404,7 +405,6 @@ footer .footer_discl {
 
 .home_meetplayers { 
     background-color: #ffffff;
-    opacity: 0.8;
     background: repeating-linear-gradient( -45deg, #ff8282, #ff8484 2px, #ffffff 2px, #ffffff 10px );
 }
 
@@ -451,7 +451,7 @@ footer .footer_discl {
 }
 .player_card_wrapper .player_card_number {
     color: #fed6d6;
-    font-size: 185px;
+    font-size: 150px;
     text-align: right;
     line-height: 160px;
 }
@@ -550,6 +550,7 @@ footer .footer_discl {
 
 .the_matches_container {
     margin-top: 96px;
+    min-height: 600px;
 }
 
 .the_matches_wrapper {
@@ -678,13 +679,14 @@ footer .footer_discl {
     padding: 20px;
     background-size: 5px 5px !important;
     min-height:100vh;
+    background-color: #fff2f2;
 }
 
 .team_category_wrapper .title {
     font-size: 90px;
     margin: 30px 0px;
     font-family: 'Righteous', cursive;
-    color: #d5ebfe;
+    color: #fed5d5;
 }
 .team_category_wrapper{
     min-height: 600px;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { auth } from "../../firebase";
 
@@ -37,14 +37,6 @@ export const showToastSuccess = (msg) => {
   toast.success(msg, {
     position: toast.POSITION.TOP_LEFT,
   });
-};
-
-export const NavigateHandler = () => {
-  const navigate = useNavigate();
-
-  return (
-    logoutHandler(navigate())
-  );
 };
 
 export const logoutHandler = (navigate) => {

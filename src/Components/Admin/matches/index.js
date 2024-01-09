@@ -1,30 +1,30 @@
 import React, { useEffect, useState } from "react";
 import AdminLayout from "../../../Hoc/adminLayout";
-import { get, playersCollection, createQuery, createLimit, After } from "../../../firebase";
+import { get, mCollection, createQuery, createLimit, After } from "../../../firebase";
 import { showToastError } from "../../Utils/tools";
 import { Link } from "react-router-dom";
 import { Button, Table, TableBody, TableCell, TableHead, TableRow, Paper, CircularProgress } from "@mui/material";
 
-const AdminPlayers = () => {
+const AdminMatches = () => {
 
     const [lastVisible, setLastVisible] = useState(null);
     const [loading, setLoading] = useState(false)
-    const [players, setPlayers] = useState(null);
+    const [matches, setMatches] = useState(null);
 
     useEffect(() => {
-        if (!players) {
+        if (!matches) {
             setLoading(true);
 
-            get(createQuery(playersCollection, createLimit(2)))
+            get(createQuery(mCollection, createLimit(2)))
                 .then(snapshot => {
                     const lastVisible = snapshot.docs[snapshot.docs.length - 1];
-                    const players = snapshot.docs.map(doc => ({
+                    const matches = snapshot.docs.map(doc => ({
                         id: doc.id,
                         ...doc.data()
                     }));
 
                     setLastVisible(lastVisible);
-                    setPlayers(players);
+                    setMatches(matches);
                 })
                 .catch(error => {
                     console.error('Error getting documents: ', error);
@@ -33,22 +33,22 @@ const AdminPlayers = () => {
                     setLoading(false);
                 });
         }
-    }, [players]);
+    }, [matches]);
 
 
-    const loadMorePlayers = () => {
+    const loadMoreMatches = () => {
         if (lastVisible) {
             setLoading(true);
-            get(createQuery(playersCollection, createLimit(2), After(lastVisible)))
+            get(createQuery(mCollection, createLimit(2), After(lastVisible)))
                 .then(snapshot => {
                     const lastVisible = snapshot.docs[snapshot.docs.length - 1];
-                    const newPlayers = snapshot.docs.map(doc => ({
+                    const newMatches = snapshot.docs.map(doc => ({
                         id: doc.id,
                         ...doc.data()
                     }));
 
                     setLastVisible(lastVisible);
-                    setPlayers([...players, ...newPlayers])
+                    setMatches([...matches, ...newMatches])
 
                 }).catch(error => {
                     showToastError(error)
@@ -57,21 +57,21 @@ const AdminPlayers = () => {
                 })
 
         } else {
-            showToastError('Não há jogadores para carregar')
+            showToastError('Não há partidas para carregar')
         }
     }
 
     return (
-        <AdminLayout title="Jogadores">
+        <AdminLayout title="Partidas">
             <div className="mb-5">
                 <Button
                     disableElevation
                     variant="outlined"
-                    to={'/admin_players/add_player'}
+                    to={'/admin_matches/add_match'}
                     color="error"
                     component={Link}
                 >
-                    Adicionar Jogador
+                    Adicionar Partida
                 </Button>
             </div>
 
@@ -80,41 +80,45 @@ const AdminPlayers = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell>
-                                Nome
+                                Data
                             </TableCell>
                             <TableCell>
-                                Sobrenome
+                                Partida
                             </TableCell>
                             <TableCell>
-                                Número do Jogador
+                                Resultado
                             </TableCell>
                             <TableCell>
-                                Posição
+                                Finalizado
                             </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {players ?
-                            players.map((player, i) => (
-                                <TableRow key={player.id}>
+                        {matches ?
+                            matches.map((match, i) => (
+                                <TableRow key={match.id}>
                                     <TableCell>
-                                        <Link to={`/admin_players/edit_player/${player.id}`}>
-                                            {player.name}
+                                        <Link to={`/admin_matches/edit_match/${match.id}`}>
+                                            {match.date}
                                         </Link>
                                     </TableCell>
                                     <TableCell>
-                                        <Link to={`/admin_players/edit_player/${player.id}`}>
-                                            {player.lastname}
+                                        <Link to={`/admin_matches/edit_match/${match.id}`}>
+                                            {match.away} <strong>-</strong> {match.local}
                                         </Link>
                                     </TableCell>
                                     <TableCell>
-                                        <Link to={`/admin_players/edit_player/${player.id}`}>
-                                            {player.number}
+                                        <Link to={`/admin_matches/edit_match/${match.id}`}>
+                                            {match.resultAway} <strong>-</strong> {match.resultLocal}
                                         </Link>
                                     </TableCell>
                                     <TableCell>
-                                        <Link to={`/admin_players/edit_player/${player.id}`}>
-                                            {player.position}
+                                        <Link to={`/admin_matches/edit_match/${match.id}`}>
+                                            {match.final === 'yes' ?
+                                                <span className="matches_tag_red">Finalizado</span>
+                                                :
+                                                <span className="matches_tag_green">Não ocorreu ainda</span>
+                                            }
                                         </Link>
                                     </TableCell>
                                 </TableRow>
@@ -126,21 +130,21 @@ const AdminPlayers = () => {
 
             <Button
                 variant="contained"
-                onClick={() => loadMorePlayers()}
+                onClick={() => loadMoreMatches()}
                 color="error"
                 disabled={loading}
             >
-                Carregar mais jogadores
+                Carregar mais partidas
             </Button>
 
             <div className="admin_progress">
-                { loading ? 
-                    <CircularProgress thickness={7} style={{color: '#E99898'}}/>
-                : null}
+                {loading ?
+                    <CircularProgress thickness={7} style={{ color: '#E99898' }} />
+                    : null}
             </div>
 
         </AdminLayout>
     )
 }
 
-export default AdminPlayers
+export default AdminMatches
